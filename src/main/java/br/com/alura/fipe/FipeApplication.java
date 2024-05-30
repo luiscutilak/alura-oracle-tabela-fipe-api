@@ -1,5 +1,6 @@
 package br.com.alura.fipe;
 
+import br.com.alura.fipe.principal.Principal;
 import br.com.alura.fipe.service.ConsumoApi;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -16,7 +17,8 @@ public class FipeApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 
-		var json = consumoApi.obterDados("https://parallelum.com.br/fipe/api/v1/carros/marcas");
+		Principal principal = new Principal();
+		principal.exibeMenu();
 
 	}
 }
