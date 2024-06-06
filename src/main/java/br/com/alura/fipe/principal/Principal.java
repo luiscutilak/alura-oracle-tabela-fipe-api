@@ -1,7 +1,11 @@
 package br.com.alura.fipe.principal;
 
+import br.com.alura.fipe.model.Dados;
+import br.com.alura.fipe.model.Modelos;
 import br.com.alura.fipe.service.ConsumoApi;
+import br.com.alura.fipe.service.ConverteDados;
 
+import java.util.Comparator;
 import java.util.Scanner;
 
 public class Principal {
@@ -9,6 +13,7 @@ public class Principal {
     private Scanner sc = new Scanner(System.in);
     private ConsumoApi c = new ConsumoApi();
     private final String URL_BASE = "https://parallelum.com.br/fipe/api/v1/";
+    private ConverteDados conversor = new ConverteDados();
 
     public void exibeMenu() {
         var menu = """
@@ -32,8 +37,24 @@ public class Principal {
             endereco = URL_BASE + "caminhoes/marcas";
         }
 
-        var json = c.obterDados(endereco);
+        var json = c.obterDados(endereco, Modelos.class);
         System.out.println(json);
+        var marcas = conversor.obterLista(json, Dados.class);
+        marcas.stream()
+                .sorted(Comparator.comparing(Dados::codigo))
+                .forEach(System.out::println);
+
+        System.out.println("Informe o código da marca para consulta!");
+        var codigoMarca = sc.nextLine();
+
+        endereco = endereco + "/" + codigoMarca + "/modelos";
+        json = c.obterDados(endereco, Modelos.class);
+        var modeloLista = conversor.obterDados(json, Modelos.class);
+
+        System.out.println("\nModelos dessa marca: ");
+        modeloLista.modelos().stream()
+                .sorted(Comparator.comparing(Dados::codigo))
+                .forEach(System.out::println);
 
     }
 }

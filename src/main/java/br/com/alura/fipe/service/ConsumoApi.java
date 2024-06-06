@@ -1,8 +1,9 @@
 package br.com.alura.fipe.service;
 
+import br.com.alura.fipe.model.Modelos;
+
 import java.io.IOException;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
@@ -10,7 +11,7 @@ import java.net.http.HttpTimeoutException;
 
 public class ConsumoApi {
 
-    public String obterDados(String endereco) {
+    public String obterDados(String endereco, Class<Modelos> modelosClass) {
 
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
